@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<style>
+  	canvas {
+  		border: 1px solid #1e1e1e;	
+  	}
+  	div.alpha {
+  		display: inline-block;
+  		cursor: pointer;
+  		width: 15px;
+  		height: 15px;
+  		background: #C05151;
+  		text-align: center;
+  		color: #ffffff;
+  	}
+  	div.disabled {
+  		background: #BCBCBC;
+  		color: #000000;
+  	}
+    div.solution {
+      width: 600px;
+      min-height: 25px;
+      background: #669999;
+    }
+    input {
+      word-spacing: 5px;
+    }
+  	</style>
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	 <script type="text/javascript" src="wordlist.js"></script>
+  </head>
+  <body>
+  <div class="intro">
+  <h2>Hang Man &#x2014; A Word Game</h2>
+  <p>Hang Man is a word Game. The word to guess is represented by a row of dashes below, representing each letter of the word. Words you cannot use include proper nouns such as names, places, and brands. Press a letter below that you are guessing which could occurs in the word. If the guess is correct, then the correct word is revealed in the box. If wrong, one element will be added in the Hang Man diagram below. If the diagram is completed before you guess the whole word, you will loose. So find out the word before the man get hanged.</p>
+  <p>For more details: <a href="https://en.wikipedia.org/wiki/Hangman_(game)">Hangman (Game)</a></p>
+  </div>
+   <canvas id="myCanvas" width="300" height="200">Canvas not supported.</canvas>
+   <div class="solution">
+    <p class="hide"><strong>Word</strong>: <span id="word"></span></p>
+    <p class="hide"><strong>Part of speech</strong>: <span id="part"></span></p>
+    <p><strong>Definition</strong>: <span id="definition"></span></p>
+    <p class="hide"><strong>Common Phrase</strong>: <span id="phrase"></span></p>
+   </div>
+    <p>Find this word to save the man: <input type="text" id="word1" disabled/></p>
+    <p>Letters you have tried: <input type="text" id="word2" disabled/></p>
+
+    <p><div class="alpha" onclick="addWord('A');$(this).removeAttr('onclick');$(this).addClass('disabled');">A</div> 
+<div class="alpha" onclick="addWord('B');$(this).removeAttr('onclick');$(this).addClass('disabled');">B</div> 
+<div class="alpha" onclick="addWord('C');$(this).removeAttr('onclick');$(this).addClass('disabled');">C</div> 
+<div class="alpha" onclick="addWord('D');$(this).removeAttr('onclick');$(this).addClass('disabled');">D</div> 
+<div class="alpha" onclick="addWord('E');$(this).removeAttr('onclick');$(this).addClass('disabled');">E</div> 
+<div class="alpha" onclick="addWord('F');$(this).removeAttr('onclick');$(this).addClass('disabled');">F</div> 
+<div class="alpha" onclick="addWord('G');$(this).removeAttr('onclick');$(this).addClass('disabled');">G</div> 
+<div class="alpha" onclick="addWord('H');$(this).removeAttr('onclick');$(this).addClass('disabled');">H</div> 
+<div class="alpha" onclick="addWord('I');$(this).removeAttr('onclick');$(this).addClass('disabled');">I</div> 
+<div class="alpha" onclick="addWord('J');$(this).removeAttr('onclick');$(this).addClass('disabled');">J</div> 
+<div class="alpha" onclick="addWord('K');$(this).removeAttr('onclick');$(this).addClass('disabled');">K</div> 
+<div class="alpha" onclick="addWord('L');$(this).removeAttr('onclick');$(this).addClass('disabled');">L</div> 
+<div class="alpha" onclick="addWord('M');$(this).removeAttr('onclick');$(this).addClass('disabled');">M</div> 
+<div class="alpha" onclick="addWord('N');$(this).removeAttr('onclick');$(this).addClass('disabled');">N</div> 
+<div class="alpha" onclick="addWord('O');$(this).removeAttr('onclick');$(this).addClass('disabled');">O</div> 
+<div class="alpha" onclick="addWord('P');$(this).removeAttr('onclick');$(this).addClass('disabled');">P</div> 
+<div class="alpha" onclick="addWord('Q');$(this).removeAttr('onclick');$(this).addClass('disabled');">Q</div> 
+<div class="alpha" onclick="addWord('R');$(this).removeAttr('onclick');$(this).addClass('disabled');">R</div> 
+<div class="alpha" onclick="addWord('S');$(this).removeAttr('onclick');$(this).addClass('disabled');">S</div> 
+<div class="alpha" onclick="addWord('T');$(this).removeAttr('onclick');$(this).addClass('disabled');">T</div> 
+<div class="alpha" onclick="addWord('U');$(this).removeAttr('onclick');$(this).addClass('disabled');">U</div> 
+<div class="alpha" onclick="addWord('V');$(this).removeAttr('onclick');$(this).addClass('disabled');">V</div> 
+<div class="alpha" onclick="addWord('W');$(this).removeAttr('onclick');$(this).addClass('disabled');">W</div> 
+<div class="alpha" onclick="addWord('X');$(this).removeAttr('onclick');$(this).addClass('disabled');">X</div> 
+<div class="alpha" onclick="addWord('Y');$(this).removeAttr('onclick');$(this).addClass('disabled');">Y</div> 
+<div class="alpha" onclick="addWord('Z');$(this).removeAttr('onclick');$(this).addClass('disabled');">Z</div></p>
+	</div>
+  </body>
+  <script>
+  //Intiting canvas and image
+  	var width = document.getElementById('myCanvas').width;
+   	var canvas = document.getElementById('myCanvas').getContext('2d');
+  	var img = new Image(300, 12);
+  	img.src = "images.jpg";
+  	img.onload = function() {
+  	canvas.drawImage(img, 0, 188);
+    };
+  	canvas.strokeStyle = '#000000';
+  	canvas.lineWidth = 1;
+
+  //hangMan object to draw on canvas
+  	var hangMan = {
+  		draw1: function(){
+  			canvas.strokeRect(125, 168, 50, 20);
+  		},
+  		draw2: function(){
+  			canvas.moveTo(150, 168);
+  			canvas.lineTo(150, 68);
+  			canvas.stroke();
+  		},
+  		draw3: function(){
+  			canvas.moveTo(150, 68);
+  			canvas.lineTo(200, 68);
+  			canvas.stroke();
+  		},
+  		draw4: function(){
+  			canvas.moveTo(200, 68);
+  			canvas.lineTo(200, 85);
+  			canvas.stroke();
+  		},
+  		draw5: function(){
+  			canvas.beginPath();
+  			canvas.arc(200, 95, 10, 0, 2 * Math.PI);
+  			canvas.stroke();
+  		},
+  		draw6: function(){
+  			canvas.moveTo(200, 105);
+  			canvas.lineTo(200, 145);
+  			canvas.stroke();
+  		},
+  		draw7: function(){
+  			canvas.moveTo(200, 112);
+  			canvas.lineTo(215, 125);
+  			canvas.stroke();
+  			canvas.moveTo(200, 112);
+  			canvas.lineTo(185, 125);
+  			canvas.stroke();
+  		},
+  		draw8: function(){
+  			canvas.moveTo(200, 145);
+  			canvas.lineTo(195, 145);
+  			canvas.lineTo(205, 145);
+  			canvas.stroke();
+  		}
+ 	};
+
+ 	//Game
+    var num = Math.floor(Math.random() * wordlist.length)
+    var gameWord = wordlist[num].word;
+    document.getElementById('word').innerHTML = wordlist[num].word;
+    document.getElementById('part').innerHTML = wordlist[num].part;
+    document.getElementById('definition').innerHTML = wordlist[num].definition;
+    document.getElementById('phrase').innerHTML = wordlist[num].phrase;
+
+    $(document).ready(function(){
+      $('.hide').hide();
+    });
+
+  var word1 = document.getElementById('word1');
+ 	var word2 = document.getElementById('word2');
+ 	var draw = 0;
+ 	word1.value = gameWord.replace(/\w/g, '#');
+
+  	function addWord(word){
+  		word2.value += word;
+  		var displayWord = word1.value.split('');
+  		if(gameWord.indexOf(word.toLowerCase()) > -1) {
+  			for(var i = 0; i < gameWord.length; i++) {
+  				if(word.toLowerCase() == gameWord[i])
+  					displayWord[i] = word;
+			}
+ 			word1.value = displayWord.join('');
+ 			if(gameWord == displayWord.join('').toLowerCase()) endGame('Success! You just saved a life');
+ 		} else {
+ 			draw++;
+ 			switch(draw){
+ 				case 1:
+ 				hangMan.draw1();
+ 				break;
+ 				case 2:
+ 				hangMan.draw2();
+ 				break;
+ 				case 3:
+ 				hangMan.draw3();
+ 				break;
+ 				case 4:
+ 				hangMan.draw4();
+ 				break;
+ 				case 5:
+ 				hangMan.draw5();
+ 				break;
+ 				case 6:
+ 				hangMan.draw6();
+ 				break;
+ 				case 7:
+ 				hangMan.draw7();
+ 				break;
+ 				case 8:
+ 				hangMan.draw8();
+ 				break;
+ 			}
+ 			if(draw == 8) endGame('What a pity! You killed the man');
+ 		}
+ 	}
+ 	function endGame(wording) {
+    $('div.alpha').each(function(){
+      $(this).addClass('disabled');
+    });
+ 		canvas.fillRect(0, 0, 300, 200);
+ 		var gradient = canvas.createLinearGradient(0, 0, width, 0);
+ 		gradient.addColorStop('0', 'magenta');
+ 		gradient.addColorStop('0.5', 'blue');
+ 		gradient.addColorStop('1.0', 'red');
+ 		canvas.fillStyle = gradient;
+ 		canvas.font = '200 20px Georgia';
+ 		canvas.fillText(wording, 10, 100);
+    word1.value = wordlist[num].word.toUpperCase();
+    $('.hide').show();
+ 	}
+  </script>
+</html>
