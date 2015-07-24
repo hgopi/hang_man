@@ -2,8 +2,14 @@
 <html>
   <head>
   	<style>
+    body {
+      background: #1e1e1e;
+      color: white;
+      margin: 1em;
+    }
   	canvas {
-  		border: 1px solid #1e1e1e;	
+  		border: 1px solid white;	
+      background: white;
   	}
   	div.alpha {
   		display: inline-block;
@@ -22,6 +28,7 @@
       width: 600px;
       min-height: 25px;
       background: #669999;
+      color: black;
     }
     input {
       word-spacing: 5px;
@@ -34,7 +41,7 @@
   <div class="intro">
   <h2>Hang Man &#x2014; A Word Game</h2>
   <p>Hang Man is a word Game. The word to guess is represented by a row of dashes below, representing each letter of the word. Words you cannot use include proper nouns such as names, places, and brands. Press a letter below that you are guessing which could occurs in the word. If the guess is correct, then the correct word is revealed in the box. If wrong, one element will be added in the Hang Man diagram below. If the diagram is completed before you guess the whole word, you will loose. So find out the word before the man get hanged.</p>
-  <p>For more details: <a href="https://en.wikipedia.org/wiki/Hangman_(game)">Hangman (Game)</a></p>
+  <p>For more details: <a href="https://en.wikipedia.org/wiki/Hangman_(game)" style="color:#FF5050">Hangman (Game)</a></p>
   </div>
    <canvas id="myCanvas" width="300" height="200">Canvas not supported.</canvas>
    <div class="solution">
